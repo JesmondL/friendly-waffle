@@ -1,0 +1,98 @@
+setup Visual Studio Code
+https://code.visualstudio.com/
+download the deb package
+https://code.visualstudio.com/docs/setup/linux
+$ sudo dpkg -i <file>.deb
+$ sudo apt-get install -f
+
+https://gitlab.com/iss.stackup/marvel-heros
+
+marval developer API
+https://developer.marvel.com/account
+JessyJessyS
+#jJ
+add localhost to referrers 
+
+google material reference
+https://material.angular.io/components/categories
+
+setup node environment. As angular/material require node version > 6, do the below to get higher node version. 
+$ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+$ export NVM_DIR="$HOME/.nvm"
+$ [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+$ nvm install node
+$ node -v 
+
+setup Angular environment
+$ npm install -g @angular/cli
+$ ng new <appname>
+Angular routing -> Y
+Stylesheet -> CSS
+$ cd <appname>
+https://material.angular.io/
+$ ng add @angular/material
+<choose theme>
+HammerJS for desktop touch screen purpose -> N
+https://github.com/angular/flex-layout/wiki/Using-Angular-CLI
+$ npm install @angular/flex-layout --save
+
+setup Angular compoments
+!configure app.module.ts @NgModule
+!modularisation for ng is to split the loading of the app, specific page load specific stuff
+!create component as shown below
+$ ng g component components/herolist
+$ ng g component components/herodetails
+$ ng g component components/character
+$ ng g service marvel
+$ ng g module material
+$ ng g module app-routing
+!components created are automatically update in the code
+!Angular view is in HTML. Display what is in ts
+    can combine HTML to ts file, but is good practice to separate
+!Angular processing and logic are in ts file. 
+    ts file constructor load once in lifetime
+    ts file ngOnInit will reload each time page refresh
+!can skip the spec file, which is use for testing like selenium
+!import services that are 2 level below the component.ts
+!constructor ts to load with marvel service, so ngOnInit can use the information holding in the service
+
+setup Angular website creation (all changes happens only in the app folder)
+1. app.compoments. HTML+CSS
+The website landing page. Where we can customize the ui with material and include routing capabilities.
+2. marvel service ts (ng g service marvel)
+This service is meant for getting the API information and perform processes to parse into variable
+3. herolist components ts
+import from the marvel service and obtain the return of character 
+constructor to load the marvel service once only 
+each time the website revisit or refresh, the herolist will be updated, therefore it needs to be the ngoninit
+4. herolist components HTML
+using material ui create a list of character that return from the routerlink
+5. character component
+import  
+6. routing 
+import components that is required for routing
+define the route path in as shown below; do note that is in the sequence. Therefore, the redirect ** must be the last to place
+const ROUTES: Routes = [
+    { path: "", component: HeroListComponent },
+    { path: "list", component: HeroListComponent },
+    { path: "character/:id", component: CharacterComponent },
+    { path: "**", redirectTo: "/", pathMatch: 'full' }
+]
+Last to do. app.module.ts 
+UI used have to be imported in the app module
+created component export name can be imported here
+
+setup Angular routing
+!create within app module or separate and then inject
+    advise to seperate for ease of tracing in repsective place
+!similar concept with React, just use type script to code
+!2 important class to bring in, RouterModule, Routes from @angular/router (mandatory)
+!import component that is to configure for routing capabilities
+!has to configure the routing module to recognise different situation
+const ROUTES:Routes =[{
+Can Parametrize the URL, eg :id that is from CharacterComponent in the ngOnInit that contains this.marvelSvc.getCharacter(this.activatedRoute.snapshot.params.id)
+Redirect with path:"**"
+!import the routing module in app.module.ts 
+
+troubleshooting
+!inspect the webpage > go to console tab and check on the API call return if is ok or error
